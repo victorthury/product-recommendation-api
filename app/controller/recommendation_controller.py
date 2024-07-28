@@ -27,7 +27,7 @@ class RecommendationController:
     return pd.merge(cheapest_products, total_sales[['product_id', 'total_sales']], on='product_id', how='left')
   
   def _normalize_column(column):
-    return (column - column.min()) / (column.max() - column.min())
+    return column / column.max()
   
   def _get_top_recommendations(cls, df):
     weight_price = float(os.getenv("WEIGHT_PRICE"))
