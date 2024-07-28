@@ -1,6 +1,14 @@
 from fastapi import FastAPI
-app = FastAPI(title="FastAPI")
+from dotenv import load_dotenv
 
-@app.get("/")
-def read_root():
-  return {"hello": "world"}
+from app.views.recommendations_view import router_recommendations
+
+app = FastAPI(title="Meliuz Challenge")
+
+load_dotenv(".env.development")
+
+app.router.include_router(
+  router_recommendations,
+  prefix="/api/v1",
+  tags=["recommendation"]
+)
