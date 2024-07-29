@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 import pandas as pd
+import os
 
 class Product(BaseModel):
   product_id: int
@@ -10,7 +11,7 @@ class Product(BaseModel):
   store_name: str
 
 def get_products() -> pd.DataFrame:
-  path = 'xpto_sales_products_mar_may_2024.csv'
+  path = os.getenv("DATASET_PATH")
 
   products = pd.read_csv(path)
   return products
