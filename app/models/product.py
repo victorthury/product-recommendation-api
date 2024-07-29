@@ -9,8 +9,8 @@ class Product(BaseModel):
   store_id: int
   store_name: str
 
-def get_products():
-  path = './xpto_sales_products_mar_may_2024.csv'
+def get_products() -> pd.DataFrame:
+  path = 'xpto_sales_products_mar_may_2024.csv'
 
   products = pd.read_csv(path)
   return products
