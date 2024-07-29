@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import logging
 
+WEIGHT_DEFAULT_VALUE = 0.5
 class RecommendationController:
   def _get_total_sales_by_product(df):
     agg_sales = df.groupby(['product_id', 'product_title']).agg({
@@ -11,7 +12,7 @@ class RecommendationController:
 
     agg_sales.rename(columns={'sales_per_day': 'total_sales'}, inplace=True)
 
-    agg_sales = agg_sales.sort_values(by=['total_sales'], ascending=False).reset_index()
+    agg_sales = agg_sales.sort_values(by=['total_sales'], ascending=False).reset_index(drop=True)
     return agg_sales
   
   def _get_last_prices_by_store(df):
@@ -30,8 +31,11 @@ class RecommendationController:
     return column / column.max()
   
   def _get_top_recommendations(cls, df):
-    weight_price = float(os.getenv("WEIGHT_PRICE"))
-    weight_sales = float(os.getenv("WEIGHT_SALES"))
+    weight_price = os.getenv("WEIGHT_PRICE") or WEIGHT_DEFAULT_VALUE
+    weight_sales = os.getenv("WEIGHT_SALES") or WEIGHT_DEFAULT_VALUE
+    
+    if not isinstance(weight_price, float): weight_price = float(weight_price)
+    if not isinstance(weight_sales, float): weight_sales = float(weight_sales)
     
     df['normalized_sales'] = cls._normalize_column(df['total_sales'])
     df['normalized_prices'] = cls._normalize_column(df['product_price'])
