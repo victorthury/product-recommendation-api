@@ -6,5 +6,5 @@ from typing import List
 router_recommendations = APIRouter()
 
 @router_recommendations.get("/recommendations")
-def get_recommendations(user_id: int) -> List[Product]:
-  return RecommendationController().get(user_id)
+def get_recommendations() -> List[Product]:
+  return RecommendationController().get()

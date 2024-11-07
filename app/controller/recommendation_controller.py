@@ -65,8 +65,8 @@ class RecommendationController:
     return formatted_recommendations
   
   @classmethod
-  def get(cls, user_id: int) -> List[Product]:
-    logger.info(f"Fetching recommendations for user_id: {user_id}")
+  def get(cls) -> List[Product]:
+    logger.info(f"Fetching recommendations for user_id")
     
     current_date = datetime.now().strftime("%Y-%m")
     cached = r.get(current_date)

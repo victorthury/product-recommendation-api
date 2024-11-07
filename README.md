@@ -1,29 +1,27 @@
-# Desafio técnico da Meliuz
+# Product Recommendation API
 
-## Como executar este projeto
+## How to run this project
 
-Para executar, rode o seguinte comando:
+To start, run the following command:
 
 ```
 docker compose up -d --build
 ```
 
-Para parar a execução
+To stop, run:
 
 ```
 docker compose down
 ```
 
-## Rotas
+## Routes
 
-- Em `http://localhost:8000/docs` será possível visualizar o swagger com as rotas
-  disponíveis.
-- A única rota disponível é `http://localhost:8000/api/v1/recommendations?user_id=<number>`
-  - deve-se informar o `user_id`. O `user_id` não interfere no resultado, mas
-    foi exigido para o desafio
-  - esta rota retornar os top 5 produtos conforme os pesos do arquivo `.env`
+- In `http://localhost:8000/docs` it is possible to access the swagger documentation
+  with the available endpoitns.
+- The only available endpoint is `http://localhost:8000/api/v1/recommendations`
+  - This route returns the top 5 recommended products depending on the weights in `.env`
 
-## Análise dos dados
+<!-- ## Análise dos dados
 
 Primeiro vamos analisar os 5 produtos mais vendidos. Uma primeira solução
 seria simplesmente retornar os produtos mais vendidos
@@ -131,45 +129,4 @@ Para este desafio, ambos os pesos estarão como 0.5 por motivos práticos. Como 
 |   1 | Casas Bahia  | Panela de Pressão Elétrica Mondial | 0.765809 |
 |   2 | Lojas Renner | Termômetro Digital G-Tech          | 0.765355 |
 |   3 | Extra        | Drone DJI Phantom                  | 0.724606 |
-|   4 | Centauro     | Máquina de Lavar Roupas Brastemp   | 0.696044 |
-
-## Melhorias
-
-### Cache
-
-Acredito que a tabela de produtos mais vendidos seria atualizada mensalmente.
-Então seria necessário abrir a tabela a cada requisição. Seria mais
-eficiente os top 5 mais recomendados em um cache como o Redis.
-
-### Rotina para computar os top 5
-
-Ainda na premissa de atualização mensal, talvez fosse interessante ter uma
-rotina que fizesse o computo dos top 5. Dado que a quantidade de produtos
-pode aumentar, seria interessante separar essa responsabilidade da API.
-Os top5 produtos recomendados poderiam ser salvos em um cache, ou até
-mesmo em um banco relacional. Assim a API teria apenas a responsabilidade
-de pegar os top 5 e não computá-los
-
-### Melhorar os pesos
-
-Seria possível melhorar os pesos. Isso poderia ser feito usando aprendizado
-de máquina ou ajustando manualmente. Idealmente realizar um teste A/B para
-checar se realmente houve ganho.
-
-## Escolhas
-
-### Framework
-
-Escolhi o fastapi como framework por conta de sua simplicidade e eficiência.
-Possui uma curva de aprendizado curta, é mais produtivo e facilita a produção
-de documentação das rotas.
-
-### Framework de teste
-
-Escolhi o Pytest por ser o framework que estou mais familiarizado. Junto dele
-também usei o módulo de cobertura de testes.
-
-### Poetry
-
-Como costumava a fazer a APIs em node, usar o poetry foi uma escolha natural
-para gerir as dependências do projeto, lembrando npm.
+|   4 | Centauro     | Máquina de Lavar Roupas Brastemp   | 0.696044 | -->

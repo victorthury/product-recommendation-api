@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "challenge-meliuz"
+name = "product-recommendation-api"
 version = "0.1.0"
-description = "challenge for job at meliuz"
+description = "product recommendation api"
 authors = ["Victor Thury <victorhauache@gmail.com>"]
 readme = "README.md"
 
