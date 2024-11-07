@@ -3,8 +3,14 @@ import pandas as pd
 import os
 import logging
 from typing import List, Dict, Any
+import redis
+import json
+from datetime import datetime
 
 WEIGHT_DEFAULT_VALUE = 0.5
+r = redis.Redis(host="redis", port=6379, db=0)
+logger = logging.getLogger('uvicorn.error')
+
 class RecommendationController:
   def _get_total_sales_by_product(df: pd.DataFrame) -> pd.DataFrame:
     agg_sales = df.groupby(['product_id', 'product_title']).agg({
@@ -60,7 +66,16 @@ class RecommendationController:
   
   @classmethod
   def get(cls, user_id: int) -> List[Product]:
-    logging.info(f"Fetching recommendations for user_id: {user_id}")
+    logger.info(f"Fetching recommendations for user_id: {user_id}")
+    
+    current_date = datetime.now().strftime("%Y-%m")
+    cached = r.get(current_date)
+    if cached:
+      data = json.loads(cached)
+      logger.info("Fetching from redis")
+      return [Product.parse_obj(product) for product in data]
+    
+    logger.info("Fetching from csv")
     products = get_products()
     
     total_sales = cls._get_total_sales_by_product(products)
@@ -72,4 +87,7 @@ class RecommendationController:
 
     top_recommendations = cls._get_top_recommendations(cls, merged_df)
     formatted_recommendations = cls._format_recommendations(top_recommendations)
+    data_to_store = json.dumps([json.loads(product.json()) for product in formatted_recommendations])
+    
+    r.set(current_date, data_to_store)
     return formatted_recommendations
